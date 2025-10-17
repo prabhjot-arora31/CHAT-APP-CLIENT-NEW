@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import io from 'socket.io-client';
 
 const socket = io('https://chat-app-backend-f3lm.onrender.com'); // ✅ Backend URL
@@ -11,8 +11,10 @@ const roomId = location.state?.roomId || 'global-room'; // ✅ dynamic/ ✅ can 
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const messagesEndRef = useRef(null);
-
+const navigate = useNavigate();
 useEffect(() => {
+  if(!localStorage.getItem('roomId'))
+    navigate('/');
   if (!roomId || !name) return;
 
   // ✅ Only send roomId — name is not needed by server
@@ -82,23 +84,23 @@ useEffect(() => {
 
         <div ref={messagesEndRef} />
       </div>
+<div className="flex flex-col sm:flex-row gap-2 w-full">
+  <input
+    type="text"
+    className="flex-1 p-2 border rounded w-full"
+    placeholder="Type your message"
+    value={message}
+    onChange={(e) => setMessage(e.target.value)}
+    onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+  />
+  <button
+    onClick={sendMessage}
+    className="bg-blue-600 text-white px-4 py-2 rounded w-full sm:w-auto"
+  >
+    Send
+  </button>
+</div>
 
-      <div className="flex gap-2">
-        <input
-          type="text"
-          className="flex-1 p-2 border rounded"
-          placeholder="Type your message"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-        />
-        <button
-          onClick={sendMessage}
-          className="bg-blue-600 text-white px-4 py-2 rounded"
-        >
-          Send
-        </button>
-      </div>
     </div>
   );
 };

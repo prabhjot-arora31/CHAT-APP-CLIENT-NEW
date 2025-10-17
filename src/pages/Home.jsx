@@ -11,6 +11,7 @@ const Home = () => {
     e.preventDefault();
     if (!name.trim()) return toast.error('Please enter your name');
     if (!roomId.trim()) return toast.error('Please enter a room ID');
+    localStorage.setItem('roomId', roomId);
     
     navigate('/chat', { state: { name, roomId } });
   };
