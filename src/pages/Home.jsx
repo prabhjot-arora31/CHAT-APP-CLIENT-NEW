@@ -17,7 +17,7 @@ const Home = () => {
   };
 
   return (
-    <div className='flex flex-col items-center justify-center h-screen gap-5 bg-gray-100'>
+    <div className='flex flex-col items-center p-3 justify-center h-screen gap-5 bg-gray-100'>
       <ToastContainer />
       <form
         onSubmit={handleSubmit}
